@@ -1,18 +1,17 @@
-name: My Pipeline              # any name you want
-
+name: ML Training Pipeline
 on:
   push:
-    branches: [main]           # trigger on push to main
-
+  branches: [main]
 jobs:
-  job_one:                     # first job name
-    runs-on: ubuntu-latest     # always this
+  train:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4   # ALWAYS first step
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install
-        run: pip install -r requirements.txt
+      - uses: actions/setup@v4
+       with:
+       python-version: '3.10'
+      - name: install
+        run: pip install -r requirements.txt mlflow
+      - name: train and ml flow
+        env:
+          mlflow_tracking_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: python train.py
